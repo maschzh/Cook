@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="js/annyang.min.js"></script>
+    <script>
+        if (annyang) {
+            // Let's define a command.
+            var commands = {
+                '你好': function() {
+                    alert('Hello world!');
+                }
+            };
+
+            // Add our commands to annyang
+            annyang.addCommands(commands);
+
+            // Start listening.
+            annyang.start();
+        }
+    </script>
+</body>
+
+</html>
