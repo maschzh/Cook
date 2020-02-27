@@ -33,7 +33,7 @@
         let audio = document.querySelector('audio');
         let audioTxt = document.getElementById('txt');
 
-        let ws = new WebSocket('ws://localhost:9001');
+        let ws = new WebSocket('ws://localhost:9002');
         ws.onopen = e => {
             console.log('Connection to server opened');
         }
@@ -76,7 +76,7 @@
         ws.onmessage = e => {
             console.log(e.data);
             let data = JSON.parse(e.data);
-            audioTxt.innerHTML = data.result;
+            audioTxt.innerHTML = data.text;
         }
 
         ws.onclose = e => {
@@ -98,7 +98,8 @@
                 recorder = RecordRTC(microphone, {
                     type: 'audio',
                     recorderType: StereoAudioRecorder,
-                    desiredSampRate: 16000
+                    desiredSampRate: 16000,
+                    // sampleRate: 16000
                 });
 
                 recorder.startRecording();

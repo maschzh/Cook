@@ -9,6 +9,11 @@ var express = require('express'),
     path = require('path'),
     ejs = require('ejs');
 
+// let Server = require('ws').Server;
+// const wss = new Server({
+//     port: 9001
+// });
+
 var app = express();
 
 // all environments
@@ -44,6 +49,47 @@ app.all('/*', function(req, res, next) {
 app.get('/', routes.index);
 app.get('/users', user.list);
 app.post('/encrypt', user.encrypt);
+
+
+// 连接服务器
+// wss.on('connection', ws => {
+//     console.log('server connected');
+//     ws.on('message', data => {
+//         console.log('server recived audio blob');
+
+//         // let client = new ApiSpeech(0, appKey, appSecret);
+//         // let voice = fs.readFileSync('assets/output.pcm');
+//         // // let voiceBase64 = new Buffer(voice);
+//         // let voiceBase64 = new Buffer(data);
+
+//         // //识别本地语音文件
+//         // client.recognize(voiceBase64, 'pcm', 16000)
+//         //     .then((result) => {
+//         //         console.log('语音识别本地音频文件结果：' + JSON.stringify(result));
+//         //         resTxt = JSON.stringify(result);
+//         //     }, (err) => {
+//         //         console.log(err);
+//         //     });
+//     });
+
+//     ws.send(resTxt);
+
+//     ws.on('error', error => {
+//         console.log('Error:' + error);
+
+//     });
+//     ws.on('close', () => {
+//         console.log('Websocket is closed');
+//     });
+// });
+
+
+// // 断开连接
+// wss.on('disconnection', ws => {
+//     ws.on('message', msg => {
+//         console.log('server recived msg:' + msg);
+//     })
+// });
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));

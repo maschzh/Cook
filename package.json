@@ -1,16 +1,18 @@
 {
-  "name": "application-name",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node app.js"
-  },
-  "dependencies": {
-    "ejs": "*",
-    "express": "3.2.4",
-    "inline-worker": "^1.1.0",
-    "node-jsencrypt": "^1.0.0",
-    "recordrtc": "^5.5.8",
-    "ws": "^7.2.1"
-  }
+    "name": "application-name",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "ejs": "*",
+        "express": "3.2.4",
+        "inline-worker": "^1.1.0",
+        "node-jsencrypt": "^1.0.0",
+        "recordrtc": "latest",
+        "ws": "^7.2.1",
+        "formidable": "latest",
+        "mime": "latest"
+    }
 }
