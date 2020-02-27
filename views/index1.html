@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="./lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container container-fluid">
+
+        <button type="button" class="btn btn-primary" id='btn-start-recording'>开始说话</button>
+        <button type="button" class="btn btn-success" id='btn-stop-recording'>停止说话</button>
+        <div class="well well-lg"><audio controls autoplay playsinline></audio></div>
+        <div>
+            <p>You said:</p>
+            <p id="txt"></p>
+        </div>
+    </div>
+
+
+    <script src="./lib/recordrtc/RecordRTC.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        let audio = document.querySelector('audio');
+        let audioTxt = document.getElementById('txt');
+
+        let ws = new WebSocket('ws://localhost:9002');
+        ws.onopen = e => {
+            console.log('Connection to server opened');
+        }
+
+        /**
+         * @name: captureMiccrophone
+         * @description: 获取麦克风权限
+         * @param {type} callback
+         * @return: none
+         */
+        function captureMicrophone(callback) {
+            navigator.mediaDevices.getUserMedia({
+                audio: true
+            }).then(callback).catch(error => {
+                alert('Unable to access your mircophone.');
+                console.error(error);
+            })
+        }
+
+        /**
+         * @name: stopRecordingCallback
+         * @description: 停止说话 发送blob给服务器
+         * @param {type} none
+         * @return none
+         */
+        function stopRecordingCallback() {
+            audio.srcObject = null;
+            let blob = recorder.getBlob();
+            console.log(blob)
+
+            //录音回放
+            audio.src = URL.createObjectURL(blob);
+            //麦克风停止使用
+            recorder.microphone.stop();
+            // 传输blob
+            ws.send(blob);
+        }
+
+        //将识别结果传送给前端显示
+        ws.onmessage = e => {
+            console.log(e.data);
+            let data = JSON.parse(e.data);
+            audioTxt.innerHTML = data.text;
+        }
+
+        ws.onclose = e => {
+            console.log('Connection to server closed');
+        }
+
+        let recorder; // globally accessible
+
+        /**
+         * @name:
+         * @description: 开始说话
+         * @param: {type} none
+         * @return:
+         */
+        document.getElementById('btn-start-recording').onclick = function() {
+            captureMicrophone(function(microphone) {
+                audio.srcObject = microphone;
+
+                recorder = RecordRTC(microphone, {
+                    type: 'audio',
+                    recorderType: StereoAudioRecorder,
+                    desiredSampRate: 16000,
+                    // sampleRate: 16000
+                });
+
+                recorder.startRecording();
+
+                // 点击停止说话，释放麦克风
+                recorder.microphone = microphone;
+                document.getElementById('btn-stop-recording').disabled = false;
+            });
+        };
+
+        /**
+         * @name:
+         * @description: 停止说话
+         * @param {type} none
+         * @return:
+         */
+        document.getElementById('btn-stop-recording').onclick = function() {
+            recorder.stopRecording(stopRecordingCallback);
+        }
+    </script>
+</body>
+
+</html>
