@@ -196,7 +196,7 @@
     HZRecorder.get = function(callback, config) {
         if (callback) {
             if (navigator.getUserMedia) {
-                debugger;
+                // debugger;
                 navigator.getUserMedia({ audio: true } //只启用音频
                     ,
                     function(stream) {

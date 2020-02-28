@@ -21,13 +21,18 @@
         <button class="btn btn-primary" onclick="playRecording()" type="button" value="播放">播放</button>
         <button class="btn btn-primary" onclick="uploadAudio()" type="button" value="提交">提交</button>
     </div>
-    <div>
+    <div id="view">
         <p>You said:</p>
         <p id="txt"></p>
+        <form>
+            <input type="checkbox" id="bike" value="Bike"> 我有1辆自行车 <br>
+            <input type="checkbox" id="bike1" value="Bike"> 我有2辆自行车 <br>
+            <input type="checkbox" id="bike2" value="Bike"> 我有3辆自行车 <br>
+            <input type="checkbox" id="bike3" value="Bike"> 我有4辆自行车 <br>
+        </form>
     </div>
 
     <script type="text/javascript" src="./js/HZRecorder.js"></script>
-
 
     <script>
         let ws = new WebSocket('ws://localhost:9002');
@@ -59,11 +64,65 @@
             recorder.play(audio);
         }
 
+
         //将识别结果传送给前端显示
         ws.onmessage = e => {
-            console.log(e.data);
-            let data = JSON.parse(e.data);
-            audioTxt.innerHTML = data.text;
+            if (e.data) {
+                console.log(e.data);
+                let data = JSON.parse(e.data);
+                // meteData(data.text);
+                // audioTxt.innerHTML = data.text;
+                if (data.text.indexOf('第一个选项') > -1 ||
+                    data.text.indexOf('第一个') > -1 ||
+                    data.text.indexOf("选项一") > -1) {
+                    let bike = document.getElementById('bike');
+                    bike.checked = true;
+                } else if (data.text.indexOf('第二个选项') > -1 ||
+                    data.text.indexOf('第二个') > -1 ||
+                    data.text.indexOf("选项二") > -1) {
+                    let bike = document.getElementById('bike1');
+                    bike.checked = true;
+                } else if (data.text.indexOf('第三个选项') > -1 ||
+                    data.text.indexOf('第三个') > -1 ||
+                    data.text.indexOf("选项三") > -1) {
+                    let bike = document.getElementById('bike2');
+                    bike.checked = true;
+                } else if (data.text.indexOf('第四个选项') > -1 ||
+                    data.text.indexOf('第四个') > -1 ||
+                    data.text.indexOf("选项四") > -1) {
+                    let bike = document.getElementById('bike3');
+                    bike.checked = true;
+                } else if (data.text.indexOf('全部清除') > -1 ||
+                    data.text.indexOf('取消勾选') > -1) {
+                    let bike1 = document.getElementById('bike');
+                    let bike2 = document.getElementById('bike1');
+                    let bike3 = document.getElementById('bike2');
+                    let bike4 = document.getElementById('bike3');
+                    bike1.checked = false;
+                    bike2.checked = false;
+                    bike3.checked = false;
+                    bike4.checked = false;
+                } else if (data.text.indexOf('全部选中') > -1 ||
+                    data.text.indexOf('全部勾选') > -1) {
+                    let bike1 = document.getElementById('bike');
+                    let bike2 = document.getElementById('bike1');
+                    let bike3 = document.getElementById('bike2');
+                    let bike4 = document.getElementById('bike3');
+                    bike1.checked = true;
+                    bike2.checked = true;
+                    bike3.checked = true;
+                    bike4.checked = true;
+                }
+
+
+            }
+        }
+
+        function meteData(data) {
+            let divNode = document.getElementById('view');
+            let liNode = document.createElement('li');
+            liNode.innerHTML = data;
+            divNode.appendChild(liNode);
         }
 
         ws.onclose = e => {

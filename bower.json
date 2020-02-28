@@ -5,6 +5,7 @@
   "dependencies": {
     "bootstrap": "^4.4.1",
     "jquery": "^3.4.1",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "angular": "1.4.7"
   }
 }
