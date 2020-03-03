@@ -99,7 +99,7 @@
                 console.log(e.data);
                 let data = JSON.parse(e.data);
                 // meteData(data.text);
-                // audioTxt.innerHTML = data.text;
+                audioTxt.innerHTML = data.text;
                 if (data.text.indexOf('第一个选项') > -1 ||
                     data.text.indexOf('第一个') > -1 ||
                     data.text.indexOf("选项一") > -1) {
