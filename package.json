@@ -14,6 +14,6 @@
     "mime": "latest",
     "node-jsencrypt": "^1.0.0",
     "recordrtc": "latest",
-    "ws": "^7.2.1"
+    "ws": "^7.4.6"
   }
 }
