@@ -8,7 +8,7 @@
   "dependencies": {
     "crypto": "^1.0.1",
     "ejs": "*",
-    "express": "3.2.4",
+    "express": "4.17.3",
     "formidable": "latest",
     "inline-worker": "^1.1.0",
     "mime": "latest",
